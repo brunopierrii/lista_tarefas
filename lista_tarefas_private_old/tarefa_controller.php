@@ -1,22 +1,29 @@
 <?php
-
 require '../../lista_tarefas_private/tarefa.model.php';
 require '../../lista_tarefas_private/tarefa.service.php';
 require '../../lista_tarefas_private/connection.php';
 
-$tarefa = new Tarefa();
-$tarefa->__set('tarefa', $_POST['tarefa']);
-
 $conn = new Connection();
 
-$tarefaService = new TarefaService($conn, $tarefa);
 
-$tarefaService->insert();
+$acao = isset($_GET['acao']) ? $_GET['acao'] : $acao;
 
-echo '<pre>';
-var_dump($tarefaService);
-echo '</pre>';
+if($acao == 'inserir'){
 
+
+    $tarefa = new Tarefa();
+    $tarefa->__set('tarefa', $_POST['tarefa']);    
+    
+    $tarefaService = new TarefaService($conn, $tarefa);
+    $tarefaService->insert();
+
+    header('Location: nova_tarefa.php?inclusao=1');
+
+} elseif($acao == 'listar') {
+
+    $tarefaService = new TarefaService($conn);
+    $tarefas = $tarefaService->show();
+}
 
 
 
